@@ -77,25 +77,61 @@ bool end=false;
 
 }
 
+
+
 void matrixToString(long A[4][4],long B[4][4],char *str)
 {
-int x;
+int x=0;
 int i;
 int j;
-for(i=0,x=0;i<4;i++)
-{
-                for(j=0;j<4;j++)
-                {
-                str[x]=A[i][j];x++;
-                }
-                printf("\n");
+
+    for (i = 0; i < 32; i++)
+    {
+        str[i] = -1;
+    }
+    while (x != 16)
+    {
+        for (i = 0; i<4; i++)
+        {
+            for (j = 0; j<4; j++)
+            {
+                if (str[x] == 'X') { printf("ENDOFFILE\n\n"); break; }
+
+                str[x] = A[i][j]+'0'; x++;
+            }
+            if (str[x] == 'X') { break; }
+
+        }
+        if (str[x] == 'X') { end_flag = true; }
+    }// end while x!=16
+
+    while (x != 32)
+    {
+        for (i = 0; i<4; i++)
+        {
+            for (j = 0; j<4; j++)
+            {
+                if (str[x] == 'X') { printf("ENDOFFILE\n\n"); break; }
+
+                str[x] = B[i][j] +'0'; x++;
+            }
+            if (str[x] == 'X') { break; }
+
+        }
+        if (str[x] == 'X') { end_flag = true; }
+    }// end while x!=32
+    str[32] = NULL;
+    puts("end of matrixtostring inside\n");
+    puts(str);
+    return;
+
 }
 
-     
-}
+
 
 void printMatrix(long A[4][4])
-{int i=0;
+{
+    int i=0;
 int j=0;
      printf("matrix:\n");
      
@@ -110,6 +146,44 @@ for(i=0;i<4;i++)
 
      
 }
+
+
+void singleMatrixToString(long A[4][4],long B[4][4],char *str)
+{
+int x=0;
+int i;
+int j;
+
+    for (i = 0; i < 32; i++)
+    {
+        str[i] = -1;
+    }
+    while (x != 16)
+    {
+        for (i = 0; i<4; i++)
+        {
+            for (j = 0; j<4; j++)
+            {
+                if (str[x] == 'X') { printf("ENDOFFILE\n\n"); break; }
+
+                str[x] = A[i][j]+'0'; x++;
+            }
+            if (str[x] == 'X') { break; }
+
+        }
+        if (str[x] == 'X') { end_flag = true; }
+    }// end while x!=16
+    str[16] = NULL;
+    puts("end of single_matrixtostring inside\n");
+    puts(str);
+    getchar();
+    fseek(stdin,0,SEEK_END);
+    return;
+
+}
+
+
+
 
 
 

@@ -1,9 +1,10 @@
 
+#include <string.h>
 #include <math.h>
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h> 
-//#include <posix.h>
+
 long **matrixMalloc(int row, int col);
 void matrixFree(long **, int row);
 long **matrixAdd(long**, long**, int row, int col);
@@ -169,97 +170,68 @@ long **parseStringToMatrix(char * str,int row, int col)
 		return A;
 
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int main(int argc, char *argv[])
-{
-
+int main(int argc, char*argv[]){
 
 	long**A;
-int i;
-	long**ans=NULL;
-	long**B=NULL;
+
+	long**ans;
+	long**B;
 	int cmd;
 	int row;
 	int col;
 	int len;
-	int ansval;
+	long ansval;
 	char ch;
-	printf("Welcome to matrix.out\n");
-	//getchar();
-	//fseek(stdin,0,SEEK_END);
+	
 	if(argc<5)
 	{
-		printf("you had %d arguments this prorgam needs 4 integer arguments cmd row col and string\n", argc);
-		int ii;
-		for( ii=0 ;  ii<argc ;  ii++ )
-		{
-		printf("atoi(argv[%d])=%d\n",i,atoi(argv[i]) );
-		}
-		return 0;
-	}
-	else 
-	{
-		printf("Matrix.c beginning.....\n\n");
+		printf("you had %d arguments this prorgam needs 4 integer arguments cmd row col  and string\n", argc);
+		return;
 	}
 	
 	row=atoi(argv[2]);
 	col=atoi(argv[3]);
 	cmd=atoi(argv[1]);
-	 
-    /*
-		for( i=0 ;  i<argc ;  i++ )
-		{
-		printf("row=%d, col=%d, cmd=%d",row,col,cmd);
-		printf("as string: ");
-		puts(argv[i]);
-		}
-*/
 
 	printf("%d\n",cmd);
 
 	if(cmd <=1)
 	{
-		len=strlen(argv[4]);   //execlp(filename, cmd, row, col,str, null)
+		len=strlen(argv[4]);
 	    B=parseStringToMatrix(argv[4]+(len/2),row,  col);
 		argv[4][len/2]=0;
 		//printf("%s\n", argv[4]);
-		 A=parseStringToMatrix(argv[4],row, col);
+		 A=parseStringToMatrix(argv[4],row,  col);
 	}
 	else
 		A=parseStringToMatrix(argv[4],row,  col);
 	if(A==NULL)
 	{
 		printf("bad string\n");
-		return 0;
+		return;
 	}
 
 	switch(cmd)
 	{
 		case 0:
-		printf("command 0 entered\n");
 			  ans=matrixAdd(A, B, row,  col);
 			  break;
 		case 1:
-		printf("command 1 entered\n");
 			ans=matrixSub(A, B, row,  col);
 			break;
 		case 2:
-		printf("command 2 entered\n");
 			ansval=matrixDet(A,row);
 	}
 
 	
 	if(cmd<=1)
 	{
-		
 		printf(" The inputs were \n");
 		matrixPrint(A,row,col);
 		matrixPrint(B,row,col);
 		printf(" The output is \n");
 		matrixPrint(ans,row,col);
-		printf("....\n");
+		printf("=====END MATRIX>OUT====\n");
 		matrixFree(A,row);
 		matrixFree(B,row);
 		matrixFree(ans,row);
