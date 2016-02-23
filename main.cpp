@@ -2,6 +2,7 @@
 #define PROGRAMSPEED 0 //in milliseconds
 #define DATASIZE 2000
 bool end_flag=false;
+int counter=0;
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -12,12 +13,31 @@ bool end_flag=false;
 #include <sys/wait.h>
 char str[32];
 char str2[16];
-#include "ThreadFunctions.h"
 #define BUFFERSIZE 50
 using namespace std;
 
+
+        typedef struct dotProductInput
+        {
+          long A[4][4];
+          long B[4][4];
+          long C;
+          int count;
+
+        };
+        pthread_t th0,th1,th2,th3,th4,th5,th6,th7,th8,th9,th10,th11,th12,th13,th14,th15;
+        pthread_t threadarray[16]={th0,th1,th2,th3,th4,th5,th6,th7,th8,th9,th10,th11,th12,th13,th14,th15};
+        dotProductInput DPI[16];//{DPI0,DPI1,DPI2,DPI3,DPI4,DPI5,DPI6,DPI7,DPI8,DPI9,DPI10,DPI11,DPI12,DPI13,DPI14,DPI15};
+        
+        dotProductInput DP;
+
+
  /* data is shared by the thread(s) */
 /* the thread runs in this separate function */
+
+
+        void *DPI_VOIDPTR;
+        //DPI_VOIDPTR=&DPI[0];
 long A[4][4], B[4][4], C[4][4];
 char input;
 long presult;  
@@ -28,12 +48,16 @@ char ABstring[32];
 char *c; 
 pid_t pid;
 
+#include "ThreadFunctions.h"
     
                
                                                                                     // begin main
 int main(int argc, char *argv[])
 {     
-  printf("snapppel\n");
+         
+        DP.C=0;
+        DP.count=0;
+  DPI_VOIDPTR=&DPI[0];
   str[32]=NULL; 
   Bstring[16]=NULL;
   Astring[16]=NULL; 
@@ -49,6 +73,12 @@ int main(int argc, char *argv[])
 
 printf("Begin Part 2 of Program, press any key\n\n\t=\t=\t=\t=\t=\t=\t=\t=\t=");
 myfilereadfrom.open ("stuff.txt");
+
+
+
+
+
+
 
 while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
 {                                                                                        
@@ -163,11 +193,14 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
       {
           fillMatrix(A);
 
+      if(end_flag==true){break;}; 
+          
           singleMatrixToString(A,B,str2);
 
-          if(end_flag==true){break;}; 
-  pid_t parent = getpid();
-  pid_t pid2 = fork();
+      if(end_flag==true){break;}; 
+
+      pid_t parent = getpid();
+      pid_t pid2 = fork();
                                                                                   // error, failed to fork()
   if (pid2 == -1)
   {
@@ -193,55 +226,118 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
 
 }// end option 2
       if(input=='3')
-      {
-        int ii;
-                    printf("we make 16 threads each doing a dot product.........\n\n");                
-      int numberOfChildren = 16;
-  pid_t *childPids;               //pid_t *childPids=NULL; -->
-  pid_t p;
+      { 
 
-  /* Allocate array of child PIDs: error handling omitted for brevity */
-  childPids = (pid_t *)malloc(numberOfChildren * sizeof(pid_t));
+        DP.count=0;
+        DP.C=0;
+        counter=0;
+        printf("begin option 3===================================\n");
+      // pthread_create (&threadarray[0], NULL, dotProduct,&DPI[0]);
+      //pthread_create (&threadarray[1], NULL, dotProduct,&DPI[1]);
 
-  /* Start up children */
-  for (ii = 0; ii < numberOfChildren; ii++)   // changed from ++ii to ii++ 
-  {
-     if ((p = fork()) == 0) {
-        // Child process: do your work here
-        exit(0);
-     }
-     else {
-        childPids[ii] = p;
-     }
-  }
+      int i=0;
+      int j=0;
 
-  /* Wait for children to exit */
-  int stillWaiting;
-  do {
-     stillWaiting = 0;
-      for (int ii = 0; ii < numberOfChildren; ++ii) 
-      {
-         if (childPids[ii] > 0) {
-           
-            if ( waitpid(childPids[ii], NULL, WNOHANG) != 0) 
-            {
-               /* Child is done */
-               childPids[ii] = 0;
-            }
-            else {
-               /* Still waiting on this child */
-               stillWaiting = 1;
-            }
-         }
-         /* Give up timeslice and prevent hard loop: this may not work on all flavors of Unix */
-         sleep(0);
-      }
-  } while (stillWaiting);
+          printf("Matrix A:\n");
+          printMatrix(DP.A);
+          printf("Matrix B:\n");
+          printMatrix(DP.B);
 
-  /* Cleanup */
-  free(childPids);
-      
-      
+        fillMatrix(DP.A);
+      if(end_flag==true){break;}
+      fillMatrix(DP.B);
+      if(end_flag==true)
+        {break;}
+      printf("Matrix A:\n");
+      printMatrix(DP.A);
+      printf("Matrix B:\n");
+      printMatrix(DP.B);
+DP.count=0;
+// create 16 threads in a nested for loop
+/*
+DP.A=A[0][0];DP.B=B[0][0];
+pthread_create (&th0, NULL, dotProduct , (void *) NULL);
+fseek(stdin,0,SEEK_END);
+getchar();
+fseek(stdin,0,SEEK_END);
+DP.A=A[0][1];DP.B=B[0][1];
+pthread_create (&th1, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+DP.A=A[0][2];DP.B=B[0][2];
+pthread_create (&th2, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+DP.A=A[0][3];DP.B=B[0][3];
+pthread_create (&th3, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+DP.A=A[1][0];DP.B=B[1][0];
+pthread_create (&th4, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th5, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th6, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th7, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th8,NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th9, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th10, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th11, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th12, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th13, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th14, NULL, dotProduct , (void *)  NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+pthread_create (&th15, NULL, dotProduct , (void *) NULL);
+getchar();
+fseek(stdin,0,SEEK_END);
+*/
+
+for(i=0;i<16;i++)
+{
+                pthread_create (&threadarray[DP.count], NULL, dotProduct , (void *) &DP);
+                
+}
+
+
+// we now will wait for all the threads to finish, using pthread_join
+
+for (i=0;i<16;i++)
+{
+    if(pthread_join(threadarray[i],NULL)) 
+    {
+    fprintf(stderr, "Error joining thread[%d]\n",i);
+    //return 2;
+    }
+}
+
+     
+      printMatrix(DP.A);
+      printMatrix(DP.B);
+      printf("dot product C=%d\n",DP.C);
+      getchar();
+      fseek(stdin,0,SEEK_END);
+
+
+
 printf("end option 3==========================================");
   }// end option 3
 

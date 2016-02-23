@@ -21,24 +21,31 @@ ifstream myfile2;
 ifstream myfilereadfrom;
 
 
-void dotProduct(long *presult, long X[], long Y[], int len)
+void *dotProduct(void *input)
 {  
-    printf("presult before dp=%d",presult);
-    for (int i = 0; i < len; i++)
-        {
-        *presult += X[i]*Y[i];
-        printf("");
-        }
-        printf("result after =%d",presult);
-     return;
-     
+    int i;
+    int j;
+            
+
+     for(i=0;i<4;i++)
+     {
+             for(j=0;j<4;j++)
+             {
+            DP.C=DP.C+(DP.A[i][j])*(DP.B[i][j]);
+             }
+     }
+
+   DP.count++;
+
+
+             return NULL;
+             //return NULL;
+
 }
 
 void fillMatrix(long A[4][4])
 {
-     //printf("begin fillmatrix\n\n");
-     //getchar();
-     //fseek(stdin,0,SEEK_END);
+
      int i=0;
 int j=0;
 char s='0';
@@ -50,16 +57,10 @@ bool end=false;
      {
              for(j=0;j<4;j++)
              {
-       //      printf("begin myfilereadfrom\n\n");
-       //      getchar();
-       //      fseek(stdin,0,SEEK_END);  
+
              myfilereadfrom.get(s);
              s=s-'0';
              if(s==40){printf("ENDOFFILE\n\n");break;}
-             printf("end readfrom,s=");
-             printf("%d\n",s); 
-         //    getchar();
-         //    fseek(stdin,0,SEEK_END);
              A[i][j]= s;
              }
              if(s==40){break;}
