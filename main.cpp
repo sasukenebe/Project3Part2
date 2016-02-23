@@ -185,7 +185,7 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
 
       if(input=='2')
       {
-        printf("========BEGIN option 2 DETERMINANT of Matrix=============");
+        printf("========BEGIN option 2 DETERMINANT of Matrices=============");
           fillMatrix(A);
 
       if(end_flag==true){break;}; 
@@ -256,7 +256,7 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
              for((DP.j)=0;(DP.j)<4;(DP.j++))
              {
               printf("creating thread %d\n",DP.count);
-            pthread_create(&threadarray[DP.count], NULL, dotProduct , (void *) &DP);
+            pthread_create(&threadarray[DP.count], NULL, multiplyThreaded , (void *) &DP);
             DP.count++;
             /////////////////////////////////////////////////ISSUE///////////////////////////////////////////
             //pthread_join(threadarray[DP.count],NULL); // errors occur if i dont wait for it to complete here...

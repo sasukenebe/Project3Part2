@@ -21,7 +21,7 @@ ifstream myfile2;
 ifstream myfilereadfrom;
 
 
-void *dotProduct(void *input)
+void *multiplyThreaded(void *input)
 {  
     int temp_row=DP.i;
     int temp_col=DP.j;
