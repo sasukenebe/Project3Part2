@@ -21,8 +21,10 @@ using namespace std;
         {
           long A[4][4];
           long B[4][4];
-          long C;
+          long C[4][4];
           int count;
+          int i;
+          int j;
 
         };
         pthread_t th0,th1,th2,th3,th4,th5,th6,th7,th8,th9,th10,th11,th12,th13,th14,th15;
@@ -55,7 +57,7 @@ pid_t pid;
 int main(int argc, char *argv[])
 {     
          
-        DP.C=0;
+        //DP.C=0;
         DP.count=0;
   DPI_VOIDPTR=&DPI[0];
   str[32]=NULL; 
@@ -93,8 +95,7 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
 
    if(input=='0')
       {
-      printf("========BEGIN option 0, until no more stuff.txt=========\n");
-      printf("we execute “add” matrix.out using execlp, we pass the arguments 0 4 4 str arguments are: cmd row col string"); 
+      printf("========BEGIN option 0, ADD Matrices=========\n");
       fillMatrix(A);
       if(end_flag==true){break;}
       fillMatrix(B);
@@ -132,7 +133,7 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
        }
        
                                                                                     
-      printf("matrix out was called successfully\nend option 0\n"); 
+  printf("========END option 0, ADD Matrices=========\n");
       } // end option 0
       
 
@@ -141,7 +142,7 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
   if(input=='1')
   {
 
-  printf("========BEGIN option 1, until no more stuff.txt=========\n");
+  printf("========BEGIN option 1, SUBTRACT Matrices=========\n");
       printf("we execute “add” matrix.out using execlp, we pass the arguments 0 4 4 str arguments are: cmd row col string"); 
        fillMatrix(A);
       if(end_flag==true){break;}
@@ -173,24 +174,18 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
           }
           else// Parent Process
           {
-      printf("========END option 1, until no more stuff.txt=========\n");
+      printf("========END option 1, ADD MATRICES=========\n");
       getchar();
       fseek(stdin,0,SEEK_END);
        
-       }
-       
-                                                                                    
+       }                                                                             
       printf("matrix out was called successfully\nend option 0\n"); 
-
-
 
 }// end option 1
 
-
-
-
       if(input=='2')
       {
+        printf("========BEGIN option 2 DETERMINANT of Matrix=============");
           fillMatrix(A);
 
       if(end_flag==true){break;}; 
@@ -201,7 +196,7 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
 
       pid_t parent = getpid();
       pid_t pid2 = fork();
-                                                                                  // error, failed to fork()
+         // error, failed to fork()
   if (pid2 == -1)
   {
       printf("fork failed\n");
@@ -215,124 +210,73 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
           }
           else // Parent Process
           {
-      printf("========END option 2, until no more stuff.txt=========\n");
+      printf("========END option 2, DETERMINANT Matrix=========\n");
       getchar();
       fseek(stdin,0,SEEK_END);
-
-
-
       }
       
 
 }// end option 2
-      if(input=='3')
-      { 
+    if(input=='3')
+    { 
+        printf("=============begin option 3 MULTIPLY Matrices=========================\n");
+        DP.i=0;
+        DP.j=0;
+        int initx, inity;
+        for(initx = 0; initx < 4; initx ++) 
+        {for(inity = 0; inity < 4; inity ++){DP.A[initx][inity] = 0;}}
+              for(initx = 0; initx < 4; initx ++) 
+        {for(inity = 0; inity < 4; inity ++){DP.B[initx][inity] = 0;}}
+              for(initx = 0; initx < 4; initx ++) 
+        {for(inity = 0; inity < 4; inity ++){DP.C[initx][inity] = 0;}}
+
 
         DP.count=0;
-        DP.C=0;
+        //fDP.C=0;
         counter=0;
-        printf("begin option 3===================================\n");
+        
       // pthread_create (&threadarray[0], NULL, dotProduct,&DPI[0]);
       //pthread_create (&threadarray[1], NULL, dotProduct,&DPI[1]);
 
       int i=0;
       int j=0;
 
-          printf("Matrix A:\n");
-          printMatrix(DP.A);
-          printf("Matrix B:\n");
-          printMatrix(DP.B);
 
         fillMatrix(DP.A);
       if(end_flag==true){break;}
       fillMatrix(DP.B);
       if(end_flag==true)
         {break;}
-      printf("Matrix A:\n");
-      printMatrix(DP.A);
-      printf("Matrix B:\n");
-      printMatrix(DP.B);
-DP.count=0;
-// create 16 threads in a nested for loop
-/*
-DP.A=A[0][0];DP.B=B[0][0];
-pthread_create (&th0, NULL, dotProduct , (void *) NULL);
-fseek(stdin,0,SEEK_END);
-getchar();
-fseek(stdin,0,SEEK_END);
-DP.A=A[0][1];DP.B=B[0][1];
-pthread_create (&th1, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-DP.A=A[0][2];DP.B=B[0][2];
-pthread_create (&th2, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-DP.A=A[0][3];DP.B=B[0][3];
-pthread_create (&th3, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-DP.A=A[1][0];DP.B=B[1][0];
-pthread_create (&th4, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th5, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th6, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th7, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th8,NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th9, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th10, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th11, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th12, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th13, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th14, NULL, dotProduct , (void *)  NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
-pthread_create (&th15, NULL, dotProduct , (void *) NULL);
-getchar();
-fseek(stdin,0,SEEK_END);
+      matrixPrint(DP.A,4,4);
+      matrixPrint(DP.B,4,4);
+
+// create 16 threads in a nested for loop 
+ for((DP.i)=0;(DP.i)<4;(DP.i)++)
+     {
+             for((DP.j)=0;(DP.j)<4;(DP.j++))
+             {
+              printf("creating thread %d\n",DP.count);
+            pthread_create(&threadarray[DP.count], NULL, dotProduct , (void *) &DP);
+            DP.count++;
+            /////////////////////////////////////////////////ISSUE///////////////////////////////////////////
+            //pthread_join(threadarray[DP.count],NULL); // errors occur if i dont wait for it to complete here...
+             /////////////////////////////////////////////////ISSUE//////////////////////////////////////////////
+            
+             }
+     }
+
+//                                        if you wait for the threads to finish out here, it returns all 0s, why?
+  /*
+     for (i=0;i<16;i++)
+{   pthread_join (threadarray[i],NULL) ;
+    
+}
 */
 
-for(i=0;i<16;i++)
-{
-                pthread_create (&threadarray[DP.count], NULL, dotProduct , (void *) &DP);
-                
-}
-
-
-// we now will wait for all the threads to finish, using pthread_join
-
-for (i=0;i<16;i++)
-{
-    if(pthread_join(threadarray[i],NULL)) 
-    {
-    fprintf(stderr, "Error joining thread[%d]\n",i);
-    //return 2;
-    }
-}
-
-     
       printMatrix(DP.A);
       printMatrix(DP.B);
-      printf("dot product C=%d\n",DP.C);
+      printf("Multiplication: ");
+      matrixPrint(DP.C,4,4);
       getchar();
       fseek(stdin,0,SEEK_END);
 

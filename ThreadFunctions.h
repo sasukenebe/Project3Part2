@@ -23,23 +23,21 @@ ifstream myfilereadfrom;
 
 void *dotProduct(void *input)
 {  
-    int i;
-    int j;
-            
+    int temp_row=DP.i;
+    int temp_col=DP.j;
+    long temp_answer;
+    int k;        
 
-     for(i=0;i<4;i++)
+     for(k=0;k<4;k++)
      {
-             for(j=0;j<4;j++)
-             {
-            DP.C=DP.C+(DP.A[i][j])*(DP.B[i][j]);
-             }
+     DP.C[temp_row][temp_col] = (DP.C[temp_row][temp_col])+(DP.A[temp_row][k])*(DP.B[k][temp_col]);
      }
+            printf("(DP.C[temp_row][temp_col])=%d,", DP.C[temp_row][temp_col] );     
 
-   DP.count++;
-
-
+   //DP.count++;
+             //pthread_exit(NULL);
              return NULL;
-             //return NULL;
+             
 
 }
 
@@ -181,6 +179,23 @@ int j;
     fseek(stdin,0,SEEK_END);
     return;
 
+}
+
+
+void matrixPrint(long M[4][4], int row, int col)
+{
+    int i,j;
+    for(i=0;i<row;i++)
+        for(j=0;j<col;j++)
+        {
+            if(j==0)
+                printf("\n[");
+            printf("%-5ld",M[i][j]);
+            if(j==col-1)
+                printf("]");
+
+        }
+        printf("\n");
 }
 
 
