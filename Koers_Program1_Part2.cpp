@@ -256,7 +256,7 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
              for((DP.j)=0;(DP.j)<4;(DP.j++))
              {
               printf("creating thread %d\n",DP.count);
-            pthread_create(&threadarray[DP.count], NULL, multiplyThreaded , (void *) &DP);
+            pthread_create(&threadarray[DP.count], NULL, multiplyThreaded , (void *) NULL);
             DP.count++;
             /////////////////////////////////////////////////ISSUE///////////////////////////////////////////
             //pthread_join(threadarray[DP.count],NULL); // errors occur if i dont wait for it to complete here...
@@ -266,12 +266,13 @@ while((input!='0')&&(input!='1')&&(input!='2')&&(input!='3')&&(input!='4'))
      }
 
 //                                        if you wait for the threads to finish out here, it returns all 0s, why?
-  /*
-     for (i=0;i<16;i++)
+/*     for (i=0;i<16;i++)
 {   pthread_join (threadarray[i],NULL) ;
     
 }
 */
+if(pthread_join(threadarray[15],NULL)!=0){printf("error rejoining thread\n\n");}
+
 
       printMatrix(DP.A);
       printMatrix(DP.B);
